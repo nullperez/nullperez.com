@@ -1,4 +1,5 @@
 import './style.css'
+import { drawScope } from './scope.js'
 
 const root = document.documentElement
 
@@ -42,22 +43,9 @@ const navObserver = new IntersectionObserver(
 )
 document.querySelectorAll('main section[id]').forEach((s) => navObserver.observe(s))
 
-// ----- Fade sections in as they scroll into view -----
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible')
-        revealObserver.unobserve(entry.target)
-      }
-    }
-  },
-  { threshold: 0.1 },
-)
-document.querySelectorAll('.section').forEach((s) => {
-  s.classList.add('reveal')
-  revealObserver.observe(s)
-})
+// ----- Hero oscilloscope -----
+const scope = document.querySelector('.scope')
+if (scope) drawScope(scope)
 
 // ----- Footer year -----
 document.getElementById('year').textContent = new Date().getFullYear()
