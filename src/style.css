@@ -19,7 +19,7 @@
 
   --display: 'Archivo', system-ui, sans-serif;
   --body: 'Archivo', system-ui, sans-serif;
-  --mono: Consolas, 'Cascadia Mono', Menlo, ui-monospace, monospace;
+  --mono: 'Ubuntu Mono', Consolas, Menlo, ui-monospace, monospace;
   --max: 1120px;
   --gutter: 24px;
   color-scheme: light;
@@ -460,7 +460,7 @@ a {
 .field text {
   fill: var(--scope-text);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 500;
   text-anchor: middle;
 }
@@ -473,7 +473,7 @@ a {
   gap: 8px 24px;
   padding-top: clamp(10px, 1.6vw, 16px);
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
 }
 
 .candump {
@@ -534,7 +534,7 @@ a {
   border-radius: 4px;
   color: #e2e8f2;
   font-family: var(--mono);
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   letter-spacing: 0.04em;
 }
 
