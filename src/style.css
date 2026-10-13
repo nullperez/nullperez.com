@@ -405,9 +405,6 @@ a {
   fill: none;
   stroke-width: 2;
   stroke-linejoin: round;
-  stroke-dasharray: 1;
-  /* One draw-on sweep on load, like a single-shot capture */
-  animation: trace-draw 1.6s cubic-bezier(0.45, 0, 0.2, 1) 0.2s both;
 }
 
 .trace-h {
@@ -418,26 +415,32 @@ a {
   stroke: var(--ch2);
 }
 
-.decode {
-  animation: decode-in 0.5s ease 1.6s both;
+/* Flat idle bus shown ahead of the sweep */
+.trace.idle {
+  stroke-opacity: 0.4;
 }
 
-@keyframes trace-draw {
-  from {
-    stroke-dashoffset: 1;
-  }
+/* Sweep position while the capture is being drawn by scrolling */
+.sweep-cursor {
+  stroke: var(--ch1);
+  stroke-width: 1;
+  stroke-opacity: 0.5;
+  vector-effect: non-scaling-stroke;
 }
 
-@keyframes decode-in {
-  from {
-    opacity: 0;
-  }
+/* Decode fields appear once the sweep has passed them */
+.field {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.field.on {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trace,
-  .decode {
-    animation: none;
+  .field {
+    transition: none;
   }
 }
 

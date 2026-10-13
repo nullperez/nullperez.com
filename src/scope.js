@@ -103,16 +103,25 @@ export function drawScope(root) {
     return d + ` L${W} ${y(recessiveV)}`
   }
 
-  el('path', { d: trace(1.5), class: 'trace trace-l', pathLength: 1 }, svg)
-  el('path', { d: trace(3.5), class: 'trace trace-h', pathLength: 1 }, svg)
+  // The traces are revealed left to right by a clip that follows the scroll position
+  const clip = el('clipPath', { id: 'scope-sweep' }, el('defs', {}, svg))
+  const sweep = el('rect', { x: 0, y: 0, width: 0, height: H }, clip)
+  // Idle bus ahead of the sweep: CAN_H and CAN_L both rest at 2.5 V, so they overlap as one flat line
+  const idleLine = el('line', { class: 'trace trace-h idle', x1: 0, x2: W, y1: y(2.5), y2: y(2.5) }, svg)
+  const traces = el('g', { 'clip-path': 'url(#scope-sweep)' }, svg)
+  el('path', { d: trace(1.5), class: 'trace trace-l' }, traces)
+  el('path', { d: trace(3.5), class: 'trace trace-h' }, traces)
+  const cursor = el('line', { class: 'sweep-cursor', x1: 0, x2: 0, y1: 0, y2: 150 }, svg)
 
   // Protocol decode row
   const decode = el('g', { class: 'decode' }, svg)
   const rowY = 168
+  const fields = []
   for (const span of spans) {
     const x0 = (span.start + idle) * bitW + 1
     const x1 = (span.end + idle) * bitW - 1
     const g = el('g', { class: `field field-${span.name}` }, decode)
+    fields.push({ g, end: x1 })
     const r = 7
     el(
       'path',
@@ -128,4 +137,45 @@ export function drawScope(root) {
     const ascii = String.fromCharCode(...FRAME.data)
     readout.textContent = `can0  ${hex(FRAME.id, 3)}   [${FRAME.data.length}]  ${bytes}   '${ascii}'`
   }
+
+  // t = 0 at the top of the page; the frame completes as the scope reaches the top of the screen
+  const header = document.querySelector('.site-header')
+  let range = 1
+  const measure = () => {
+    const top = root.getBoundingClientRect().top + window.scrollY
+    range = Math.max(top - (header?.offsetHeight ?? 0) - 24, 1)
+  }
+
+  const render = (p) => {
+    const x = p * W
+    sweep.setAttribute('width', x)
+    idleLine.setAttribute('x1', x)
+    cursor.setAttribute('x1', x)
+    cursor.setAttribute('x2', x)
+    cursor.style.display = p > 0 && p < 1 ? '' : 'none'
+    for (const f of fields) f.g.classList.toggle('on', x >= f.end)
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    render(1)
+    return
+  }
+
+  let queued = false
+  const update = () => {
+    queued = false
+    render(Math.min(Math.max(window.scrollY / range, 0), 1))
+  }
+  const schedule = () => {
+    if (queued) return
+    queued = true
+    requestAnimationFrame(update)
+  }
+  window.addEventListener('scroll', schedule, { passive: true })
+  window.addEventListener('resize', () => {
+    measure()
+    schedule()
+  })
+  measure()
+  update()
 }
