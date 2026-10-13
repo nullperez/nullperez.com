@@ -79,17 +79,24 @@
         </div>
 
         <!-- Oscilloscope view of one CAN frame; the trace is generated in src/scope.js -->
-        <figure class="scope" aria-label="Oscilloscope capture of a CAN bus frame carrying the bytes HELLO">
+        <figure class="scope" aria-label="Oscilloscope capture of a CAN bus frame">
           <div class="scope-screen">
             <svg class="scope-svg" aria-hidden="true"></svg>
           </div>
           <figcaption class="scope-readout">
-            <code class="candump"></code>
+            <code class="candump" aria-live="polite"></code>
             <span class="channels">
               <span class="ch ch1">CH1 CAN_H</span>
               <span class="ch ch2">CH2 CAN_L</span>
             </span>
           </figcaption>
+          <form class="scope-send" autocomplete="off">
+            <label for="frame-data">Type up to 8 characters to send your own frame</label>
+            <div class="send-row">
+              <input id="frame-data" name="data" maxlength="8" value="HELLO" spellcheck="false" autocapitalize="off" />
+              <button type="submit">Send frame</button>
+            </div>
+          </form>
         </figure>
       </section>
 
