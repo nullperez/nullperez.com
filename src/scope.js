@@ -26,7 +26,12 @@ function buildFrame({ id, data }) {
     { name: 'id', bits: toBits(id, 11), label: hex(id, 3) },
     { name: 'ctrl', bits: [0, 0, 0] }, // RTR, IDE, r0
     { name: 'dlc', bits: toBits(data.length, 4), label: String(data.length) },
-    ...data.map((byte) => ({ name: 'data', bits: toBits(byte, 8), label: hex(byte) })),
+    ...data.map((byte) => ({
+      name: 'data',
+      bits: toBits(byte, 8),
+      label: hex(byte),
+      ascii: byte === 0x20 ? '␣' : String.fromCharCode(byte), // show spaces so the slot isn't blank
+    })),
   ]
   const crc = crc15(fields.flatMap((f) => f.bits))
   fields.push({ name: 'crc', bits: toBits(crc, 15), label: `CRC ${hex(crc, 4)}` })
@@ -48,7 +53,7 @@ function buildFrame({ id, data }) {
         run = 1
       }
     }
-    if (field.label) spans.push({ name: field.name, label: field.label, start, end: wire.length })
+    if (field.label) spans.push({ name: field.name, label: field.label, ascii: field.ascii, start, end: wire.length })
   }
 
   const ackStart = wire.length
@@ -145,6 +150,11 @@ export function drawScope(root) {
       )
       const t = el('text', { x: (x0 + x1) / 2, y: rowY + 16.5 }, g)
       t.textContent = span.label
+      // ASCII character for each data byte, just above its hex value
+      if (span.ascii) {
+        const a = el('text', { class: 'ascii', x: (x0 + x1) / 2, y: rowY - 5 }, g)
+        a.textContent = span.ascii
+      }
     }
 
     if (readout) readout.textContent = candump(frame)

@@ -465,6 +465,10 @@ a {
   text-anchor: middle;
 }
 
+.field text.ascii {
+  opacity: 0.7;
+}
+
 .scope-readout {
   display: flex;
   flex-wrap: wrap;
