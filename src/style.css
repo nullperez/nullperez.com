@@ -1,6 +1,7 @@
 /* ---------- Theme tokens ---------- */
 :root {
   --paper: #f2f5f9;
+  --card: #ffffff;
   --ink: #131c2b;
   --muted: #526077;
   --line: #d3dbe6;
@@ -20,7 +21,7 @@
   --display: 'Archivo', system-ui, sans-serif;
   --body: 'Archivo', system-ui, sans-serif;
   --mono: 'Ubuntu Mono', Consolas, Menlo, ui-monospace, monospace;
-  --max: 1120px;
+  --max: 1240px;
   --gutter: 24px;
   color-scheme: light;
 }
@@ -28,6 +29,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --paper: #0d1628;
+    --card: #121d33;
     --ink: #e2e8f2;
     --muted: #93a1b9;
     --line: #22304a;
@@ -41,6 +43,7 @@
 
 :root[data-theme='dark'] {
   --paper: #0d1628;
+  --card: #121d33;
   --ink: #e2e8f2;
   --muted: #93a1b9;
   --line: #22304a;
@@ -671,36 +674,195 @@ a {
 }
 
 /* ---------- Projects ---------- */
+/* Projects use the full page width, with the heading above the cards */
+.section-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Every card has the same horizontal shape; rows share the tallest card's height */
 .projects {
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: 28px;
   max-width: none;
 }
 
 .project {
-  padding: 28px 0;
-  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
 }
 
-.project:first-child {
-  padding-top: 0;
-  border-top: 0;
+.project-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  background: var(--scope-bg);
 }
 
-.project:last-child {
-  padding-bottom: 0;
+/* The main image is a button that opens the larger view */
+.cover-main {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+/* All of a card's images sit side by side; the track slides to the current one */
+.cover-main {
+  overflow: hidden;
+}
+
+.cover-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cover-main img {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Placeholder cover: an idle scope screen until there's a photo */
+.cover-placeholder {
+  position: relative;
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-height: 0;
+  background-color: var(--scope-bg);
+  background-image:
+    linear-gradient(var(--scope-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--scope-grid) 1px, transparent 1px);
+  background-size: 10% 20%;
+  background-position: -1px -1px;
+}
+
+.cover-placeholder::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: var(--ch1);
+  opacity: 0.4;
+}
+
+.cover-placeholder span {
+  position: relative;
+  padding: 6px 14px;
+  border: 1px solid var(--scope-bezel);
+  border-radius: 4px;
+  background: var(--scope-bg);
+  color: var(--scope-text);
+  font-family: var(--mono);
+  font-size: 1rem;
+}
+
+.cover-main:focus-visible,
+.thumb:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -4px;
+}
+
+/* Thumbnails float over the bottom of the image on a translucent black strip */
+.cover-thumbs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgb(0 0 0 / 0.55);
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.thumb {
+  width: 84px;
+  height: 52px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: none;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.thumb:hover {
+  opacity: 1;
+}
+
+.thumb.is-active {
+  border-color: var(--brand);
+  opacity: 1;
+}
+
+/* Countdown to the next slide on the card that's auto-advancing */
+.thumb {
+  position: relative;
+}
+
+.playing .thumb.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--brand);
+  animation: slide-countdown var(--slide-duration, 10s) linear forwards; /* set from SLIDE_MS in main.js */
+}
+
+@keyframes slide-countdown {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 36px;
 }
 
 .project h3 {
-  font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
   font-weight: 700;
-  font-variation-settings: 'wdth' 118;
+  font-variation-settings: 'wdth' 112;
   line-height: 1.15;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .project p {
   color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
   max-width: 40em;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .project-meta {
@@ -708,8 +870,7 @@ a {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 24px;
-  max-width: 40em;
+  gap: 12px 20px;
 }
 
 .project-link {
@@ -717,42 +878,205 @@ a {
   white-space: nowrap;
 }
 
-/* ---------- Experience: a trace with a via at each role ---------- */
-.timeline {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 28px;
-  position: relative;
+/* Below tablet width the image goes on top */
+@media (max-width: 960px) {
+  .projects {
+    grid-auto-rows: auto;
+  }
+
+  .project {
+    grid-template-columns: 1fr;
+  }
+
+  .project-cover {
+    min-height: 0;
+  }
+
+  .cover-main,
+  .cover-placeholder {
+    aspect-ratio: 16 / 10;
+  }
+
+  .cover-thumbs {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+
+  .thumb {
+    width: 60px;
+    height: 38px;
+  }
+
+  .project-body {
+    padding: 22px 22px 26px;
+  }
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: var(--brand);
-  opacity: 0.6;
+/* ---------- Larger image view ---------- */
+.lightbox {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #e2e8f2;
+}
+
+.lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.lightbox::backdrop {
+  background: rgb(5 9 18 / 0.88);
+  backdrop-filter: blur(6px);
+}
+
+.lightbox figure {
+  margin: 0;
+  max-width: min(88vw, 1500px);
+}
+
+.lightbox img {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  margin: 0 auto;
+  border-radius: 10px;
+  background: var(--scope-bg);
+  animation: lightbox-in 0.18s ease-out;
+}
+
+.lightbox figcaption {
+  max-width: 70ch;
+  margin: 14px auto 0;
+  color: #b8c4d6;
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.08);
+  color: #e2e8f2;
+  cursor: pointer;
+}
+
+.lightbox-close:hover,
+.lightbox-nav:hover {
+  background: rgb(255 255 255 / 0.18);
+}
+
+.lightbox-close:focus-visible,
+.lightbox-nav:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  font-size: 1.125rem;
+}
+
+.lightbox-nav {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.lightbox.single .lightbox-nav {
+  display: none;
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@media (max-width: 720px) {
+  .lightbox[open] {
+    gap: 6px;
+  }
+
+  .lightbox figure {
+    max-width: calc(100vw - 100px);
+  }
+
+  .lightbox-nav {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox img {
+    animation: none;
+  }
+
+  .cover-track {
+    transition: none;
+  }
+}
+
+/* ---------- Experience: a trace with a via at each role ---------- */
+.timeline {
+  --rail: 8px; /* horizontal center of the trace */
+  --via: 14px; /* dot diameter */
+  --via-y: 11px; /* dot center, level with the date line */
+  --indent: 36px;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--indent);
 }
 
 .timeline li {
   position: relative;
-  padding-bottom: 36px;
+  padding-bottom: 40px;
 }
 
 .timeline li:last-child {
   padding-bottom: 0;
 }
 
+/* Trace segment from this via down to the next one */
+.timeline li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--rail) - var(--indent) - 1px);
+  top: var(--via-y);
+  bottom: calc(var(--via-y) * -1);
+  width: 2px;
+  background: var(--brand);
+  opacity: 0.6;
+}
+
 .timeline li::before {
   content: '';
   position: absolute;
-  left: -28px;
-  top: 4px;
-  width: 6px;
-  height: 6px;
-  border: 2.5px solid var(--brand);
+  z-index: 1;
+  left: calc(var(--rail) - var(--indent) - var(--via) / 2);
+  top: calc(var(--via-y) - var(--via) / 2);
+  width: var(--via);
+  height: var(--via);
+  box-sizing: border-box;
+  border: 3px solid var(--brand);
   border-radius: 50%;
   background: var(--paper);
 }

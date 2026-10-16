@@ -52,8 +52,8 @@
         </button>
         <ul class="nav-links" id="nav-links">
           <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
           <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
           <li>
             <button class="theme-toggle" aria-label="Toggle dark mode">
@@ -129,39 +129,6 @@
         </div>
       </section>
 
-      <!-- ===== Projects ===== -->
-      <section class="section container" id="projects">
-        <h2>Projects</h2>
-        <!-- TODO: copy an <article class="project"> block for each project -->
-        <div class="section-body projects">
-          <article class="project">
-            <h3>Gauge Cluster Test Bench</h3>
-            <p>Reverse-engineered an automotive gauge cluster and developed a closed-loop Python/ESP32 test bench with computer-vision feedback and an MCP server for agentic AI control.</p>
-            <div class="project-meta">
-              <ul class="tags tags-sm"><li>CAN</li><li>Python</li><li>ESP32</li></ul>
-              <!-- <a href="#" target="_blank" rel="noopener">Live ↗</a>-->
-              <a class="project-link" href="https://github.com/nullperez/infiniti-q50-testbench" target="_blank" rel="noopener">Code ↗</a>
-            </div>
-          </article>
-          <article class="project">
-            <h3>HydraSense Fire Hydrant Monitoring System</h3>
-            <p>I collaborated to develop a prototype solution for a remote fire hydrant monitoring system using a Texas Instruments TM4C123GH6PM microcontroller to collect valve, water-flow, and pressure data and transmit GPS-tagged MQTT telemetry over LTE to a web dashboard for live and historical monitoring.</p>
-            <div class="project-meta">
-              <ul class="tags tags-sm"><li>MCU</li><li>TCP/IP</li><li>C</li></ul>
-              <a class="project-link" href="https://github.com/nullperez/HydraSense" target="_blank" rel="noopener">Code ↗</a>
-            </div>
-          </article>
-          <article class="project">
-            <h3>nullperez.com</h3>
-            <p>This website. Built with plain HTML, CSS and JavaScript on Vite, deployed automatically to GitHub Pages on every push.</p>
-            <div class="project-meta">
-              <ul class="tags tags-sm"><li>HTML</li><li>CSS</li><li>GitHub Actions</li></ul>
-              <a class="project-link" href="https://github.com/nullperez/Website" target="_blank" rel="noopener">Code ↗</a>
-            </div>
-          </article>
-        </div>
-      </section>
-
       <!-- ===== Experience ===== -->
       <section class="section container" id="experience">
         <h2>Experience</h2>
@@ -198,6 +165,73 @@
         </div>
       </section>
 
+      <!-- ===== Projects ===== -->
+      <section class="section section-wide container" id="projects">
+        <h2>Projects</h2>
+        <!-- TODO: one <article class="project"> card per project. Covers go in public/projects/ (landscape, about 1600px wide) -->
+        <div class="section-body projects">
+          <article class="project">
+            <div class="project-cover">
+              <button class="cover-main" type="button" aria-label="View larger image">
+                <span class="cover-track">
+                  <img src="/projects/gauge-bench.jpg" alt="Test bench: the Infiniti Q50 gauge cluster on the desk, wired to an ESP32 breadboard, with an oscilloscope and a monitor showing the bench software mirroring the cluster" width="1600" height="1200" loading="lazy" />
+                  <img src="/projects/gauge2.jpg" alt="Camera view of the cluster: each indicator the bench turned on is outlined in red, after sending 5 CAN frames" width="1433" height="806" loading="lazy" />
+                </span>
+              </button>
+              <div class="cover-thumbs">
+                <button class="thumb is-active" type="button" aria-label="Show photo 1: the test bench" aria-pressed="true">
+                  <img src="/projects/gauge-bench.jpg" alt="Test bench: the Infiniti Q50 gauge cluster on the desk, wired to an ESP32 breadboard, with an oscilloscope and a monitor showing the bench software mirroring the cluster" width="1600" height="1200" loading="lazy" />
+                </button>
+                <button class="thumb" type="button" aria-label="Show photo 2: the computer-vision check" aria-pressed="false">
+                  <img src="/projects/gauge2.jpg" alt="Camera view of the cluster: each indicator the bench turned on is outlined in red, after sending 5 CAN frames" width="1433" height="806" loading="lazy" />
+                </button>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>Gauge Cluster Test Bench</h3>
+              <p>Reverse-engineered an automotive gauge cluster and developed a closed-loop Python/ESP32 test bench with computer-vision feedback and an MCP server for agentic AI control.</p>
+              <div class="project-meta">
+                <ul class="tags tags-sm"><li>CAN</li><li>Python</li><li>ESP32</li></ul>
+                <!-- <a href="#" target="_blank" rel="noopener">Live ↗</a>-->
+                <a class="project-link" href="https://github.com/nullperez/infiniti-q50-testbench" target="_blank" rel="noopener">Code ↗</a>
+              </div>
+            </div>
+          </article>
+          <article class="project">
+            <!-- Placeholder until there's a photo; to add one, copy the Gauge Cluster card's cover markup (e.g. /projects/hydrasense.jpg) -->
+            <div class="project-cover">
+              <div class="cover-placeholder">
+                <span>Preview coming soon</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>HydraSense Fire Hydrant Monitoring System</h3>
+              <p>I collaborated to develop a prototype solution for a remote fire hydrant monitoring system using a Texas Instruments TM4C123GH6PM microcontroller to collect valve, water-flow, and pressure data and transmit GPS-tagged MQTT telemetry over LTE to a web dashboard for live and historical monitoring.</p>
+              <div class="project-meta">
+                <ul class="tags tags-sm"><li>MCU</li><li>TCP/IP</li><li>C</li></ul>
+                <a class="project-link" href="https://github.com/nullperez/HydraSense" target="_blank" rel="noopener">Code ↗</a>
+              </div>
+            </div>
+          </article>
+          <article class="project">
+            <!-- Placeholder until there's a photo; to add one, copy the Gauge Cluster card's cover markup (e.g. /projects/rtos.jpg) -->
+            <div class="project-cover">
+              <div class="cover-placeholder">
+                <span>Preview coming soon</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>Custom RTOS &amp; Network Stack</h3>
+              <p>This is a project combining two separate systems I wrote during college: a preemptive RTOS and a bare-metal TCP/IP network stack for the TI TM4C123GH6PM microcontroller. The RTOS features priority scheduling with preemption, and task stacks are isolated using the Memory Protection Unit (MPU). The custom TCP/IP stack implements ARP, IPv4, ICMP, UDP, TCP, DHCP, HTTP, and MQTT and communicates through an ENC28J60 ethernet controller over SPI.</p>
+              <div class="project-meta">
+                <ul class="tags tags-sm"><li>C</li><li>RTOS</li><li>TCP/IP</li><li>ARM Cortex-M4</li></ul>
+                <a class="project-link" href="https://github.com/nullperez/tiva-c-rtos-with-network" target="_blank" rel="noopener">Code ↗</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <!-- ===== Contact ===== -->
       <section class="section container contact" id="contact">
         <h2>Contact</h2>
@@ -221,6 +255,17 @@
         </div>
       </section>
     </main>
+
+    <!-- Larger image view for project photos (src/main.js) -->
+    <dialog class="lightbox" aria-label="Image viewer">
+      <button class="lightbox-close" type="button" aria-label="Close">✕</button>
+      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous image">‹</button>
+      <figure>
+        <img alt="" />
+        <figcaption></figcaption>
+      </figure>
+      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next image">›</button>
+    </dialog>
 
     <footer class="site-footer">
       <div class="container">
